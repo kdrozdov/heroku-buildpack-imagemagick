@@ -37,7 +37,7 @@ echo "-----> Building ImageMagick"
 cd $IMAGE_MAGICK_DIR
 export CPPFLAGS="-I$INSTALL_DIR/include"
 export LDFLAGS="-L$INSTALL_DIR/lib"
-./configure --prefix=$INSTALL_DIR --without-gvc --with-heic
+./configure --prefix=$INSTALL_DIR --without-gvc
 make && make install
 cd ..
 rm -rf $IMAGE_MAGICK_DIR

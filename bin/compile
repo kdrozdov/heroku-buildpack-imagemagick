@@ -24,7 +24,7 @@ if [ ! -f $CACHE_FILE ]; then
   IMAGE_MAGICK_URL="https://github.com/ImageMagick/ImageMagick6/archive/$IMAGE_MAGICK_VERSION.tar.gz"
 
   echo "-----> Downloading ImageMagick from $IMAGE_MAGICK_URL"
-  wget $IMAGE_MAGICK_URL -o "ImageMagick-$IMAGE_MAGICK_VERSION.tar.gz" -P $BUILD_DIR | indent
+  wget $IMAGE_MAGICK_URL -O "ImageMagick-$IMAGE_MAGICK_VERSION.tar.gz" -P $BUILD_DIR | indent
 
   echo "-----> Extracting ImageMagick from $BUILD_DIR/$IMAGE_MAGICK_FILE"
   if [ ! -f $BUILD_DIR/$IMAGE_MAGICK_FILE ]; then

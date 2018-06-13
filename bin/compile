@@ -73,10 +73,13 @@ ACTUAL_INSTALL_PATH="$HOME/vendor/imagemagick"
 mkdir -p $(dirname $PROFILE_PATH)
 echo "export PATH=$ACTUAL_INSTALL_PATH/bin:\$PATH" >> $PROFILE_PATH
 echo "export MAGICK_CONFIGURE_PATH=$ACTUAL_INSTALL_PATH" >> $PROFILE_PATH
+echo "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:\$ACTUAL_INSTALL_PATH/vendor/imagemagick/lib" >> $PROFILE_PATH
 
 EXPORT_PATH="$BUILD_DIR/export"
+echo "export PATH=$ACTUAL_INSTALL_PATH/bin:\$PATH" >> $EXPORT_PATH
 echo "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:\$ACTUAL_INSTALL_PATH/vendor/imagemagick/lib" >> $EXPORT_PATH
 echo "export PKG_CONFIG_PATH=$ACTUAL_INSTALL_PATH/lib/pkgconfig" >> $EXPORT_PATH
+echo "export MAGICK_CONFIGURE_PATH=$ACTUAL_INSTALL_PATH" >> $EXPORT_PATH
 
 if [ -d "$BUILD_DIR/.heroku_bundle" ]; then
   echo "-----> Updating bundle config"

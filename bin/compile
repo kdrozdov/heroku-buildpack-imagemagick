@@ -36,10 +36,8 @@ if [ ! -f $CACHE_FILE ]; then
 
   echo "-----> Building ImageMagick"
   cd $IMAGE_MAGICK_DIR
-  export PKG_CONFIG_PATH=$INSTALL_DIR/lib/pkgconfig
   export CPPFLAGS="-I$INSTALL_DIR/include"
   export LDFLAGS="-L$INSTALL_DIR/lib"
-  export LD_LIBRARY_PATH=$INSTALL_DIR/lib
   ./configure --prefix=$INSTALL_DIR --without-gvc
   make && make install
   cd ..
@@ -76,12 +74,11 @@ mkdir -p $(dirname $PROFILE_PATH)
 echo "export PATH=$ACTUAL_INSTALL_PATH/bin:\$PATH" >> $PROFILE_PATH
 echo "export MAGICK_CONFIGURE_PATH=$ACTUAL_INSTALL_PATH" >> $PROFILE_PATH
 echo "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:\$ACTUAL_INSTALL_PATH/vendor/imagemagick/lib" >> $PROFILE_PATH
+echo "export PKG_CONFIG_PATH=$ACTUAL_INSTALL_PATH/lib/pkgconfig" >> $PROFILE_PATH
 
 if [ -d "$BUILD_DIR/.heroku_bundle" ]; then
   echo "-----> Updating bundle config"
   rm -f $CACHE_DIR/.bundle
   cp -v -R $BUILD_DIR/.heroku_bundle $BUILD_DIR/.bundle
   sed -i "s,/app,$BUILD_DIR,g" $BUILD_DIR/.bundle/config
-  export PATH=$BUILD_DIR/vendor/imagemagick/bin:\$PATH
-  export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:\$BUILD_DIR/vendor/imagemagick/lib
 fi

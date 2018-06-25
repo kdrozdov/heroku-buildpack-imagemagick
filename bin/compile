@@ -8,6 +8,8 @@ echo "-----> Install ImageMagick"
 
 BUILD_DIR=$1
 CACHE_DIR=$2
+BP_DIR=$(cd $(dirname ${0:-}); cd ..; pwd)
+
 VENDOR_DIR="$BUILD_DIR/vendor"
 mkdir -p $VENDOR_DIR
 INSTALL_DIR="$VENDOR_DIR/imagemagick"
@@ -77,9 +79,12 @@ echo "export MAGICK_HOME=$ACTUAL_INSTALL_PATH" >> $PROFILE_PATH
 echo "export LD_LIBRARY_PATH=$ACTUAL_INSTALL_PATH/lib:\$LD_LIBRARY_PATH" >> $PROFILE_PATH
 echo "export PKG_CONFIG_PATH=$ACTUAL_INSTALL_PATH/lib/pkgconfig" >> $PROFILE_PATH
 
-if [ -d "$BUILD_DIR/.heroku_bundle" ]; then
-  echo "-----> Updating bundle config"
-  rm -f $CACHE_DIR/.bundle
-  cp -v -R $BUILD_DIR/.heroku_bundle $BUILD_DIR/.bundle
-  sed -i "s,/app,$BUILD_DIR,g" $BUILD_DIR/.bundle/config
-fi
+# if [ -d "$BUILD_DIR/.heroku_bundle" ]; then
+#   echo "-----> Updating bundle config"
+#   rm -f $CACHE_DIR/.bundle
+#   cp -v -R $BUILD_DIR/.heroku_bundle $BUILD_DIR/.bundle
+#   sed -i "s,/app,$BUILD_DIR,g" $BUILD_DIR/.bundle/config
+# fi
+
+echo "export PKG_CONFIG_PATH=\"$BUILD_DIR/vendor/imagemagick/lib/pkgconfig\"" > $BP_DIR/export
+echo "export BUNDLE_BUILD__RMAGICK=\"--with-opt-dir=$BUILD_DIR/vendor/imagemagick\"" >> $BP_DIR/export

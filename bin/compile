@@ -77,14 +77,3 @@ echo "export PATH=$ACTUAL_INSTALL_PATH/bin:\$PATH" >> $PROFILE_PATH
 echo "export MAGICK_CONFIGURE_PATH=$ACTUAL_INSTALL_PATH" >> $PROFILE_PATH
 echo "export MAGICK_HOME=$ACTUAL_INSTALL_PATH" >> $PROFILE_PATH
 echo "export LD_LIBRARY_PATH=$ACTUAL_INSTALL_PATH/lib:\$LD_LIBRARY_PATH" >> $PROFILE_PATH
-echo "export PKG_CONFIG_PATH=$ACTUAL_INSTALL_PATH/lib/pkgconfig" >> $PROFILE_PATH
-
-# if [ -d "$BUILD_DIR/.heroku_bundle" ]; then
-#   echo "-----> Updating bundle config"
-#   rm -f $CACHE_DIR/.bundle
-#   cp -v -R $BUILD_DIR/.heroku_bundle $BUILD_DIR/.bundle
-#   sed -i "s,/app,$BUILD_DIR,g" $BUILD_DIR/.bundle/config
-# fi
-
-export PKG_CONFIG_PATH="$BUILD_DIR/vendor/imagemagick/lib/pkgconfig"
-export BUNDLE_BUILD__RMAGICK="--with-opt-dir=$BUILD_DIR/vendor/imagemagick"

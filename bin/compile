@@ -17,46 +17,46 @@ mkdir -p $INSTALL_DIR
 IMAGE_MAGICK_VERSION="${IMAGE_MAGICK_VERSION:-6.9.10-1}"
 CACHE_FILE="$CACHE_DIR/imagemagick-$IMAGE_MAGICK_VERSION.tar.gz"
 
-# if [ ! -f $CACHE_FILE ]; then
-# install imagemagick
-IMAGE_MAGICK_FILE="ImageMagick-$IMAGE_MAGICK_VERSION.tar.gz"
-IMAGE_MAGICK_DIR="ImageMagick6-$IMAGE_MAGICK_VERSION"
-# SSL cert used on imagemagick not recognized by heroku.
+if [ ! -f $CACHE_FILE ]; then
+  # install imagemagick
+  IMAGE_MAGICK_FILE="ImageMagick-$IMAGE_MAGICK_VERSION.tar.gz"
+  IMAGE_MAGICK_DIR="ImageMagick6-$IMAGE_MAGICK_VERSION"
+  # SSL cert used on imagemagick not recognized by heroku.
 
-IMAGE_MAGICK_URL="https://github.com/ImageMagick/ImageMagick6/archive/$IMAGE_MAGICK_VERSION.tar.gz"
+  IMAGE_MAGICK_URL="https://github.com/ImageMagick/ImageMagick6/archive/$IMAGE_MAGICK_VERSION.tar.gz"
 
-echo "-----> Downloading ImageMagick from $IMAGE_MAGICK_URL"
-wget $IMAGE_MAGICK_URL -O $BUILD_DIR/$IMAGE_MAGICK_FILE | indent
+  echo "-----> Downloading ImageMagick from $IMAGE_MAGICK_URL"
+  wget $IMAGE_MAGICK_URL -O $BUILD_DIR/$IMAGE_MAGICK_FILE | indent
 
-echo "-----> Extracting ImageMagick from $BUILD_DIR/$IMAGE_MAGICK_FILE"
-if [ ! -f $BUILD_DIR/$IMAGE_MAGICK_FILE ]; then
-  echo "Error: Unable to download ImageMagick" | indent
-  ls $BUILD_DIR | indent
-  exit 1;
+  echo "-----> Extracting ImageMagick from $BUILD_DIR/$IMAGE_MAGICK_FILE"
+  if [ ! -f $BUILD_DIR/$IMAGE_MAGICK_FILE ]; then
+    echo "Error: Unable to download ImageMagick" | indent
+    ls $BUILD_DIR | indent
+    exit 1;
+  fi
+  tar zxvf $BUILD_DIR/$IMAGE_MAGICK_FILE | indent
+
+  echo "-----> Building ImageMagick"
+  cd $IMAGE_MAGICK_DIR
+  export CPPFLAGS="-I$INSTALL_DIR/include"
+  export LDFLAGS="-L$INSTALL_DIR/lib"
+  ./configure --prefix=$INSTALL_DIR --without-gvc
+  make && make install
+  cd ..
+  rm -rf $IMAGE_MAGICK_DIR
+
+  # cache for future deploys
+  echo "-----> Caching ImageMagick installation"
+  cd $VENDOR_DIR
+  REL_INSTALL_DIR="imagemagick"
+  tar czf $REL_INSTALL_DIR.tar.gz $REL_INSTALL_DIR
+  mv $REL_INSTALL_DIR.tar.gz $CACHE_FILE
+
+else
+  # cache exists, extract it
+  echo "-----> Extracting ImageMagick $CACHE_FILE => $VENDOR_DIR"
+  tar xzf $CACHE_FILE -C $VENDOR_DIR
 fi
-tar zxvf $BUILD_DIR/$IMAGE_MAGICK_FILE | indent
-
-echo "-----> Building ImageMagick"
-cd $IMAGE_MAGICK_DIR
-export CPPFLAGS="-I$INSTALL_DIR/include"
-export LDFLAGS="-L$INSTALL_DIR/lib"
-./configure --prefix=$INSTALL_DIR --without-gvc
-make && make install
-cd ..
-rm -rf $IMAGE_MAGICK_DIR
-
-# cache for future deploys
-# echo "-----> Caching ImageMagick installation"
-# cd $VENDOR_DIR
-# REL_INSTALL_DIR="imagemagick"
-# tar czf $REL_INSTALL_DIR.tar.gz $REL_INSTALL_DIR
-# mv $REL_INSTALL_DIR.tar.gz $CACHE_FILE
-
-# else
-#   # cache exists, extract it
-#   echo "-----> Extracting ImageMagick $CACHE_FILE => $VENDOR_DIR"
-#   tar xzf $CACHE_FILE -C $VENDOR_DIR
-# fi
 
 echo "-----> Writing policy file"
 mkdir -p $INSTALL_DIR/etc/ImageMagick

@@ -79,5 +79,5 @@ echo "export MAGICK_HOME=$ACTUAL_INSTALL_PATH" >> $PROFILE_PATH
 echo "export LD_LIBRARY_PATH=$ACTUAL_INSTALL_PATH/lib:\$LD_LIBRARY_PATH" >> $PROFILE_PATH
 
 echo "-----> Updating export variables"
-echo "export LD_LIBRARY_PATH=\"$BUILD_DIR/vendor/imagemagick/lib:\$LD_LIBRARY_PATH\"" > $BP_DIR/export
-echo "export PKG_CONFIG_PATH=\"$BUILD_DIR/vendor/imagemagick/lib/pkgconfig:\$PKG_CONFIG_PATH"" >> $BP_DIR/export
+echo "export LD_LIBRARY_PATH=\"$BUILD_DIR/vendor/imagemagick/lib:\\$LD_LIBRARY_PATH\"" > $BP_DIR/export
+echo "export PKG_CONFIG_PATH=\"$BUILD_DIR/vendor/imagemagick/lib/pkgconfig:\\$PKG_CONFIG_PATH"" >> $BP_DIR/export

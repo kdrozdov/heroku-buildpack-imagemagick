@@ -57,6 +57,7 @@ else
   echo "-----> Extracting ImageMagick $CACHE_FILE => $VENDOR_DIR"
   tar xzf $CACHE_FILE -C $VENDOR_DIR
   export PKG_CONFIG_PATH="$BUILD_DIR/app/vendor/imagemagick/lib/pkgconfig"
+  export LD_LIBRARY_PATH="$BUILD_DIR/app/vendor/imagemagick/lib"
 fi
 
 echo "-----> Writing policy file"
